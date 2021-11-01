@@ -1,112 +1,112 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
-import React from 'react';
-import type {Node} from 'react';
+import 'react-native-gesture-handler';
+import React, {Component} from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
+  BackHandler,
   Text,
-  useColorScheme,
   View,
+  Alert,
+  ActivityIndicator,
+  Image,
+  StatusBar,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+//storage
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
+//start stacks
+import StartStack from './App/Start/StartStack';
+import HomeStack from './App/Home/bottomTabs';
+import {NavigationContainer} from '@react-navigation/native';
+
+//animated
+import * as Animatable from 'react-native-animatable';
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {start: null};
+
+    this.loData();
+  }
+
+  loData = () => {
+    setTimeout(async () => {
+      try {
+        const value = await AsyncStorage.getItem('user');
+        if (value !== null) {
+          this.setState({...this.state, start: 'user'});
+        } else {
+          this.setState({...this.state, start: 'user_null'});
+        }
+      } catch (error) {
+        if (error) {
+          Alert.alert(
+            'App Crash',
+            'Your App Crashed Due to initialization Error, Try Unistalling and Install Again',
+            [
+              {
+                text: 'Ok',
+                onPress: () => {
+                  BackHandler.exitApp();
+                },
+              },
+            ],
+          );
+        }
+      }
+    }, 3000);
+  };
+  render() {
+    if (this.state.start === null) {
+      return <Splash />;
+    }
+    return <AppContent start={this.state.start} />;
+  }
+}
+
+//content
+const AppContent = ({start}) => {
+  if (start === 'user') {
+    return (
+      <NavigationContainer>
+        <HomeStack />
+      </NavigationContainer>
+    );
+  } else {
+    return (
+      <NavigationContainer>
+        <StatusBar backgroundColor="#005CE6" />
+        <StartStack />
+      </NavigationContainer>
+    );
+  }
+};
+
+//holds splash screen
+const Splash = () => {
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
+    <View
+      style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+      <Animatable.View style={{margin: 2}} animation="fadeInRight">
+        <Image
+          source={require('./App/Resources/muuc_logo.png')}
+          style={{height: 150, width: 150}}
+        />
+      </Animatable.View>
+      <Animatable.View animation="fadeInLeft" style={{position: 'relative'}}>
+        <Text
+          style={{
+            fontSize: 20,
+          }}>
+          Model Uganda
+        </Text>
+      </Animatable.View>
     </View>
   );
 };
-
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;
