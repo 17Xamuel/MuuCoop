@@ -41,7 +41,7 @@ class Help extends Component {
                 onPress={() => {
                   Linking.openURL('https://student.lirauni.ac.ug');
                 }}>
-                Student Portal
+                Visit Website
               </Text>
             </View>
             <View style={styles.link}>
@@ -52,7 +52,7 @@ class Help extends Component {
                 onPress={() => {
                   Linking.openURL('https://lirauni.ac.ug');
                 }}>
-                University Website
+                Contact Us
               </Text>
             </View>
             <View style={styles.link}>
@@ -63,7 +63,7 @@ class Help extends Component {
                 onPress={() => {
                   Linking.openURL('https://www.yammieshoppers.com');
                 }}>
-                Yammie Shoppers
+                Report Fraud
               </Text>
             </View>
             <View style={styles.link}>
@@ -73,7 +73,7 @@ class Help extends Component {
                 onPress={() => {
                   Linking.openURL('https://www.beaconnetug.com');
                 }}>
-                Beaconnet
+                Market A Product/Service
               </Text>
             </View>
             <View style={styles.link}>

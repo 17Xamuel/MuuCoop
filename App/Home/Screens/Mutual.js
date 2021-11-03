@@ -15,11 +15,12 @@ import {
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {TextInput} from 'react-native-paper';
+import DropDown from 'react-native-paper-dropdown';
 
 class MutualAccount extends Component {
   constructor(props) {
     super(props);
-    this.state = {loanInputCtr: false};
+    this.state = {loanInputCtr: false, select: false};
   }
 
   renderItem = () => <MutualLoan />;
@@ -121,18 +122,20 @@ class MutualAccount extends Component {
                   />
                 }
               />
-              <TextInput
-                style={styles.input_ctr}
-                label="Mobile Number"
-                mode="outlined"
-                onChangeText={e => {
-                  this.setState({...this.state, number: e});
+              <DropDown
+                label={'Colors'}
+                mode={'outlined'}
+                visible={this.state.select}
+                showDropDown={() => {
+                  this.setState({...this.state, select: true});
                 }}
-                right={
-                  <TextInput.Icon
-                    name={this.state.passwordVisible ? 'eye-off' : 'eye'}
-                  />
-                }
+                onDismiss={() => {
+                  this.setState({...this.state, select: false});
+                }}
+                // value={colors}
+                // setValue={setColors}
+                list={colorList}
+                multiSelect
               />
             </View>
             <TouchableOpacity style={styles.buttonNoWidth}>
@@ -213,6 +216,29 @@ const styles = StyleSheet.create({
   },
 });
 
+//for dropdown
+const colorList = [
+  {
+    label: 'White',
+    value: 'white',
+  },
+  {
+    label: 'Red',
+    value: 'red',
+  },
+  {
+    label: 'Blue',
+    value: 'blue',
+  },
+  {
+    label: 'Green',
+    value: 'green',
+  },
+  {
+    label: 'Orange',
+    value: 'orange',
+  },
+];
 //flatlist component
 const DATA = [
   {
