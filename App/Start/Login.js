@@ -22,6 +22,16 @@ class Login extends Component {
     super(props);
     this.state = {passwordVisible: false, member_number: '', password: ''};
   }
+
+  // componentDidMount = () => {
+  //   if (this.props.route.params.member_number) {
+  //     this.setState({
+  //       ...this.state,
+  //       member_number: `${this.props.route.params.member_number}`,
+  //     });
+  //   }
+  // };
+
   togglePassword = () => {
     this.setState({
       ...this.state,
@@ -30,16 +40,16 @@ class Login extends Component {
   };
   post = async () => {
     ToastAndroid.show('Please Wait...', ToastAndroid.SHORT);
-    if (this.state.username === '' || this.state.password === '') {
+    if (this.state.member_number === '' || this.state.password === '') {
       ToastAndroid.show('All Fields are Required...', ToastAndroid.LONG);
       return;
     }
     let data = {
-      username: this.state.member_number,
+      number: this.state.member_number,
       password: this.state.password,
     };
     let api = new FormsApi();
-    let res = await api.post(`/user/student/login`, data);
+    let res = await api.post(`/app/login`, data);
     if (res !== 'Error') {
       if (res.data === 'Error') {
         ToastAndroid.show('An Error Occured', ToastAndroid.LONG);
@@ -58,7 +68,7 @@ class Login extends Component {
               },
             ]);
           } else {
-            this.props.navigation.navigate('Drawer');
+            this.props.navigation.navigate('BottomTabs');
           }
         });
       }
@@ -96,6 +106,8 @@ class Login extends Component {
             <TextInput
               style={styles.input_ctr}
               label="Member Number"
+              keyboardType="number-pad"
+              value={this.state.member_number}
               mode="outlined"
               right={<TextInput.Icon name="account-circle-outline" />}
               onChangeText={e => {

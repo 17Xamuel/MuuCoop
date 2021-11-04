@@ -39,7 +39,7 @@ class Help extends Component {
               <Text
                 style={styles.linkText}
                 onPress={() => {
-                  Linking.openURL('https://student.lirauni.ac.ug');
+                  Linking.openURL('https://muucoop.herokuapp.com');
                 }}>
                 Visit Website
               </Text>
@@ -50,7 +50,7 @@ class Help extends Component {
               <Text
                 style={styles.linkText}
                 onPress={() => {
-                  Linking.openURL('https://lirauni.ac.ug');
+                  Linking.openURL('https://muucoop.herokuapp.com');
                 }}>
                 Contact Us
               </Text>
@@ -61,7 +61,7 @@ class Help extends Component {
               <Text
                 style={styles.linkText}
                 onPress={() => {
-                  Linking.openURL('https://www.yammieshoppers.com');
+                  Linking.openURL('https://muucoop.herokuapp.com');
                 }}>
                 Report Fraud
               </Text>
@@ -71,7 +71,7 @@ class Help extends Component {
               <Text
                 style={styles.linkText}
                 onPress={() => {
-                  Linking.openURL('https://www.beaconnetug.com');
+                  Linking.openURL('https://muucoop.herokuapp.com');
                 }}>
                 Market A Product/Service
               </Text>
@@ -81,7 +81,7 @@ class Help extends Component {
               <Text
                 style={styles.linkText}
                 onPress={() => {
-                  Linking.openURL('https://campusweekly.herokuapp.com');
+                  Linking.openURL('https://muucoop.herokuapp.com');
                 }}>
                 Campus Weekly
               </Text>

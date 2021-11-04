@@ -28,6 +28,7 @@ class Register extends Component {
       nin: '',
       phone: '',
       email: '',
+      password: '',
       next_of_kin: '',
       next_of_kin_contact: '',
       mbr_location: '',
@@ -41,47 +42,41 @@ class Register extends Component {
       passwordVisible: !this.state.passwordVisible,
     });
   };
-  // post = async () => {
-  //   ToastAndroid.show('Please Wait...', ToastAndroid.SHORT);
-  //   if (this.state.username === '' || this.state.password === '') {
-  //     ToastAndroid.show('All Fields are Required...', ToastAndroid.LONG);
-  //     return;
-  //   }
-  //   let data = {
-  //     username: this.state.member_number,
-  //     password: this.state.password,
-  //   };
-  //   let api = new FormsApi();
-  //   let res = await api.post(`/user/student/login`, data);
-  //   if (res !== 'Error') {
-  //     if (res.data === 'Error') {
-  //       ToastAndroid.show('An Error Occured', ToastAndroid.LONG);
-  //     } else if (res.data === 'Wrong_details') {
-  //       ToastAndroid.show('Wrong Username or Password', ToastAndroid.LONG);
-  //     } else {
-  //       ToastAndroid.show('Success, Redirecting...', ToastAndroid.LONG);
-  //       await AsyncStorage.setItem('user', JSON.stringify(res), error => {
-  //         if (error) {
-  //           Alert.alert('Error', 'An Error Occured, Start The App Again', [
-  //             {
-  //               text: 'Exit',
-  //               onPress: () => {
-  //                 BackHandler.exitApp();
-  //               },
-  //             },
-  //           ]);
-  //         } else {
-  //           this.props.navigation.navigate('Drawer');
-  //         }
-  //       });
-  //     }
-  //   } else {
-  //     ToastAndroid.show(
-  //       'An Error Occured, Check Your Internet...',
-  //       ToastAndroid.LONG,
-  //     );
-  //   }
-  // };
+  post = async () => {
+    ToastAndroid.show('Please Wait...', ToastAndroid.SHORT);
+    if (this.state.mbr_location === '' || this.state.password === '') {
+      ToastAndroid.show('These Fields are Required...', ToastAndroid.LONG);
+      return;
+    }
+    let data = {
+      member_first_name: this.state.firstname,
+      member_surname: this.state.surname,
+      member_nin: this.state.nin,
+      member_email: this.state.email,
+      member_phone: this.state.phone,
+      member_password: this.state.password,
+      member_next_of_kin: this.state.next_of_kin,
+      member_next_of_kin_phone: this.state.next_of_kin_contact,
+      member_location: this.state.mbr_location,
+    };
+    let api = new FormsApi();
+    let res = await api.post(`/app/new_member`, data);
+    if (res !== 'Error') {
+      if (res.data === 'Error') {
+        ToastAndroid.show('An Error Occured', ToastAndroid.LONG);
+      } else {
+        ToastAndroid.show('Success, Redirecting...', ToastAndroid.LONG);
+        this.props.navigation.navigate('Login', {
+          member_number: res.member_number,
+        });
+      }
+    } else {
+      ToastAndroid.show(
+        'An Error Occured, Check Your Internet...',
+        ToastAndroid.LONG,
+      );
+    }
+  };
   render() {
     if (this.state.activeTab === 0) {
       return (
@@ -89,7 +84,7 @@ class Register extends Component {
           <Animatable.View style={styles.welcome} animation="fadeIn">
             <Text
               style={{
-                fontSize: 40,
+                fontSize: 32,
                 fontWeight: 'bold',
                 color: '#fff',
                 paddingHorizontal: 20,
@@ -110,6 +105,7 @@ class Register extends Component {
               <TextInput
                 style={styles.input_ctr}
                 label="Surname"
+                value={this.state.surname}
                 mode="outlined"
                 right={<TextInput.Icon name="account-circle-outline" />}
                 onChangeText={e => {
@@ -118,6 +114,7 @@ class Register extends Component {
               />
               <TextInput
                 style={styles.input_ctr}
+                value={this.state.firstname}
                 label="First Name"
                 mode="outlined"
                 right={<TextInput.Icon name="account-circle-outline" />}
@@ -128,6 +125,7 @@ class Register extends Component {
               <TextInput
                 style={styles.input_ctr}
                 label="NIN Number"
+                value={this.state.nin}
                 mode="outlined"
                 onChangeText={e => {
                   this.setState({...this.state, nin: e});
@@ -138,10 +136,21 @@ class Register extends Component {
             <TouchableOpacity
               style={styles.button}
               onPress={() => {
-                this.setState({
-                  ...this.state,
-                  activeTab: this.state.activeTab + 1,
-                });
+                if (
+                  this.state.firstname == '' ||
+                  this.state.surname == '' ||
+                  this.state.nin == ''
+                ) {
+                  ToastAndroid.show(
+                    'All Fields are required',
+                    ToastAndroid.SHORT,
+                  );
+                } else {
+                  this.setState({
+                    ...this.state,
+                    activeTab: this.state.activeTab + 1,
+                  });
+                }
               }}>
               <Text
                 style={{
@@ -179,7 +188,7 @@ class Register extends Component {
           <Animatable.View style={styles.welcome} animation="fadeIn">
             <Text
               style={{
-                fontSize: 40,
+                fontSize: 32,
                 fontWeight: 'bold',
                 color: '#fff',
                 paddingHorizontal: 20,
@@ -201,6 +210,7 @@ class Register extends Component {
                 style={styles.input_ctr}
                 label="Phone Contact"
                 mode="outlined"
+                value={this.state.phone}
                 right={<TextInput.Icon name="account-circle-outline" />}
                 onChangeText={e => {
                   this.setState({...this.state, phone: e});
@@ -209,6 +219,7 @@ class Register extends Component {
               <TextInput
                 style={styles.input_ctr}
                 label="Email"
+                value={this.state.email}
                 mode="outlined"
                 right={<TextInput.Icon name="account-circle-outline" />}
                 onChangeText={e => {
@@ -244,10 +255,17 @@ class Register extends Component {
               <TouchableOpacity
                 style={styles.stepButton}
                 onPress={() => {
-                  this.setState({
-                    ...this.state,
-                    activeTab: this.state.activeTab + 1,
-                  });
+                  if (this.state.phone == '' || this.state.email == '') {
+                    ToastAndroid.show(
+                      'All Fields are required',
+                      ToastAndroid.SHORT,
+                    );
+                  } else {
+                    this.setState({
+                      ...this.state,
+                      activeTab: this.state.activeTab + 1,
+                    });
+                  }
                 }}>
                 <Text
                   style={{
@@ -270,7 +288,7 @@ class Register extends Component {
           <Animatable.View style={styles.welcome} animation="fadeIn">
             <Text
               style={{
-                fontSize: 40,
+                fontSize: 32,
                 fontWeight: 'bold',
                 color: '#fff',
                 paddingHorizontal: 20,
@@ -291,6 +309,7 @@ class Register extends Component {
               <TextInput
                 style={styles.input_ctr}
                 label="Next Of Kin Name"
+                value={this.state.next_of_kin}
                 mode="outlined"
                 right={<TextInput.Icon name="account-circle-outline" />}
                 onChangeText={e => {
@@ -299,6 +318,7 @@ class Register extends Component {
               />
               <TextInput
                 style={styles.input_ctr}
+                value={this.state.next_of_kin_contact}
                 label="Next Of Kin - Phone Contact"
                 mode="outlined"
                 right={<TextInput.Icon name="account-circle-outline" />}
@@ -335,10 +355,20 @@ class Register extends Component {
               <TouchableOpacity
                 style={styles.stepButton}
                 onPress={() => {
-                  this.setState({
-                    ...this.state,
-                    activeTab: this.state.activeTab + 1,
-                  });
+                  if (
+                    this.state.next_of_kin == '' ||
+                    this.state.next_of_kin_contact == ''
+                  ) {
+                    ToastAndroid.show(
+                      'All Fields are required',
+                      ToastAndroid.SHORT,
+                    );
+                  } else {
+                    this.setState({
+                      ...this.state,
+                      activeTab: this.state.activeTab + 1,
+                    });
+                  }
                 }}>
                 <Text
                   style={{
@@ -361,12 +391,12 @@ class Register extends Component {
           <Animatable.View style={styles.welcome} animation="fadeIn">
             <Text
               style={{
-                fontSize: 40,
+                fontSize: 32,
                 fontWeight: 'bold',
                 color: '#fff',
                 paddingHorizontal: 20,
               }}>
-              Your Location
+              Your Location &amp; Passport Photo
             </Text>
             <Text
               style={{
@@ -383,9 +413,21 @@ class Register extends Component {
                 style={styles.input_ctr}
                 label="Type Your Location"
                 mode="outlined"
+                value={this.state.mbr_location}
                 right={<TextInput.Icon name="account-circle-outline" />}
                 onChangeText={e => {
                   this.setState({...this.state, mbr_location: e});
+                }}
+              />
+              <TextInput
+                style={styles.input_ctr}
+                value={this.state.password}
+                label="Please Set your password"
+                mode="outlined"
+                secureTextEntry={true}
+                right={<TextInput.Icon name="account-circle-outline" />}
+                onChangeText={e => {
+                  this.setState({...this.state, password: e});
                 }}
               />
             </View>
@@ -447,11 +489,7 @@ class Register extends Component {
                   Back
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.stepButton}
-                onPress={() => {
-                  this.props.navigation.navigate('BottomTabs');
-                }}>
+              <TouchableOpacity style={styles.stepButton} onPress={this.post}>
                 <Text
                   style={{
                     fontSize: 15,

@@ -10,6 +10,13 @@ import {
   StatusBar,
 } from 'react-native';
 
+import {
+  DarkTheme,
+  DefaultTheme,
+  Provider,
+  ThemeProvider,
+} from 'react-native-paper';
+
 //storage
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -69,14 +76,23 @@ const AppContent = ({start}) => {
   if (start === 'user') {
     return (
       <NavigationContainer>
-        <HomeStack />
+        <Provider theme={DefaultTheme}>
+          <ThemeProvider theme={DefaultTheme}>
+            <StatusBar backgroundColor="#005CE6" />
+            <HomeStack />
+          </ThemeProvider>
+        </Provider>
       </NavigationContainer>
     );
   } else {
     return (
       <NavigationContainer>
-        <StatusBar backgroundColor="#005CE6" />
-        <StartStack />
+        <Provider theme={DefaultTheme}>
+          <ThemeProvider theme={DefaultTheme}>
+            <StatusBar backgroundColor="#005CE6" />
+            <StartStack />
+          </ThemeProvider>
+        </Provider>
       </NavigationContainer>
     );
   }

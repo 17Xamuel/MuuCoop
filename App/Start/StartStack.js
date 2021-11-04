@@ -15,7 +15,11 @@ function StartStack() {
   return (
     <>
       <Stack.Navigator screenOptions={{header: () => null}}>
-        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          initialParams={{member_number: ''}}
+        />
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="BottomTabs" component={BottomTabs} />
       </Stack.Navigator>

@@ -20,7 +20,7 @@ import DropDown from 'react-native-paper-dropdown';
 class MutualAccount extends Component {
   constructor(props) {
     super(props);
-    this.state = {loanInputCtr: false, select: false};
+    this.state = {loanInputCtr: false, select: false, member: ''};
   }
 
   renderItem = () => <MutualLoan />;
@@ -123,7 +123,7 @@ class MutualAccount extends Component {
                 }
               />
               <DropDown
-                label={'Colors'}
+                label={'Members'}
                 mode={'outlined'}
                 visible={this.state.select}
                 showDropDown={() => {
@@ -132,8 +132,10 @@ class MutualAccount extends Component {
                 onDismiss={() => {
                   this.setState({...this.state, select: false});
                 }}
-                // value={colors}
-                // setValue={setColors}
+                value={this.state.member}
+                setValue={e => {
+                  this.setState({...this.state, member: e});
+                }}
                 list={colorList}
                 multiSelect
               />
@@ -219,24 +221,24 @@ const styles = StyleSheet.create({
 //for dropdown
 const colorList = [
   {
-    label: 'White',
-    value: 'white',
+    label: 'Sam',
+    value: 'Sam',
   },
   {
-    label: 'Red',
-    value: 'red',
+    label: 'Peter',
+    value: 'Peter',
   },
   {
-    label: 'Blue',
-    value: 'blue',
+    label: 'Sseka',
+    value: 'Sseka',
   },
   {
-    label: 'Green',
-    value: 'green',
+    label: 'Xam',
+    value: 'Xam',
   },
   {
-    label: 'Orange',
-    value: 'orange',
+    label: 'Daisy',
+    value: 'Daisy',
   },
 ];
 //flatlist component

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const url = 'https://thebeacon.herokuapp.com/api';
+const url = 'https://muucoop.herokuapp.com';
 
 export default class FormsApi {
   async post(i, data) {
