@@ -23,14 +23,14 @@ class Login extends Component {
     this.state = {passwordVisible: false, member_number: '', password: ''};
   }
 
-  // componentDidMount = () => {
-  //   if (this.props.route.params.member_number) {
-  //     this.setState({
-  //       ...this.state,
-  //       member_number: `${this.props.route.params.member_number}`,
-  //     });
-  //   }
-  // };
+  componentDidMount = () => {
+    if (this.props.route.params.member_number) {
+      this.setState({
+        ...this.state,
+        member_number: `${this.props.route.params.member_number}`,
+      });
+    }
+  };
 
   togglePassword = () => {
     this.setState({

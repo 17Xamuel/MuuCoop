@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {Component} from 'react';
 import {
   SafeAreaView,
@@ -6,6 +7,9 @@ import {
   Linking,
   TouchableOpacity,
   View,
+  ToastAndroid,
+  BackHandler,
+  Alert,
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 // import * as Linking from "expo-linking";
@@ -34,8 +38,18 @@ class Help extends Component {
             </View>
           </View>
           <View style={styles.linksCtr}>
-            <View style={styles.link}>
+            {/* <View style={styles.link}>
               <Feather name="user-plus" size={24} color="#000" />
+              <Text
+                style={styles.linkText}
+                onPress={() => {
+                   
+                }}>
+                Register A another member
+              </Text>
+            </View> */}
+            <View style={styles.link}>
+              <Feather name="external-link" size={24} color="#000" />
               <Text
                 style={styles.linkText}
                 onPress={() => {
@@ -56,7 +70,7 @@ class Help extends Component {
               </Text>
             </View>
             <View style={styles.link}>
-              <Feather name="shopping-cart" size={24} color="#000" />
+              <Feather name="user-x" size={24} color="#000" />
 
               <Text
                 style={styles.linkText}
@@ -77,13 +91,34 @@ class Help extends Component {
               </Text>
             </View>
             <View style={styles.link}>
-              <Feather name="file-plus" size={24} color="#000" />
+              <Feather name="log-out" size={24} color="#000" />
               <Text
                 style={styles.linkText}
                 onPress={() => {
-                  Linking.openURL('https://muucoop.herokuapp.com');
+                  Alert.alert(
+                    'Log Out',
+                    'Press ok to continue otherwise Cancel',
+                    [
+                      {text: 'Cancel', onPress: () => {}},
+                      {
+                        text: 'Ok',
+                        onPress: async () => {
+                          await AsyncStorage.removeItem('user', err => {
+                            if (err) {
+                              ToastAndroid.show(
+                                'Error in loggin you out',
+                                ToastAndroid.LONG,
+                              );
+                            } else {
+                              BackHandler.exitApp();
+                            }
+                          });
+                        },
+                      },
+                    ],
+                  );
                 }}>
-                Campus Weekly
+                Log Out
               </Text>
             </View>
           </View>

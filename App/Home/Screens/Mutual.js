@@ -51,7 +51,7 @@ class MutualAccount extends Component {
               <View>
                 <Text
                   style={{color: 'white', fontSize: 30, fontWeight: 'bold'}}>
-                  Mutual Loans
+                  Mutual Friends
                 </Text>
               </View>
               <View>
@@ -140,7 +140,7 @@ class MutualAccount extends Component {
                 multiSelect
               />
             </View>
-            <TouchableOpacity style={styles.buttonNoWidth}>
+            <TouchableOpacity style={[styles.buttonNoWidth, {marginTop: 20}]}>
               <Text
                 style={{
                   fontSize: 20,

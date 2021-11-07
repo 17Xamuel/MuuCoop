@@ -8,12 +8,14 @@ import {
   TouchableWithoutFeedback,
   Touchable,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import * as Animatable from 'react-native-animatable';
 import {TextInput} from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class Home extends Component {
   constructor(props) {
@@ -21,8 +23,20 @@ class Home extends Component {
     this.state = {
       saveInputCtr: false,
       loanInputCtr: false,
+      member: {},
     };
+    this.load();
   }
+  load = async () => {
+    let item = await AsyncStorage.getItem('user', (error, result) => {
+      if (error) {
+        this.setState({...this.state, member: {}});
+      } else {
+        this.setState({...this.state, member: JSON.parse(result)});
+      }
+    });
+  };
+
   render() {
     return (
       <>
@@ -30,6 +44,15 @@ class Home extends Component {
           style={{flex: 1, backgroundColor: '#005CE6', position: 'relative'}}>
           <View style={styles.topCtr}>
             <View>
+              <Text
+                style={{
+                  marginHorizontal: Dimensions.get('window').width * 0.01,
+                  marginTop: Dimensions.get('window').height * 0.02,
+                  color: 'white',
+                  fontSize: 20,
+                }}>
+                Model Uganda Urban Cooperation
+              </Text>
               <View
                 style={{
                   marginTop: 20,
@@ -44,7 +67,9 @@ class Home extends Component {
                   <Text style={{color: 'white', fontSize: 18.5}}>
                     Owobushobozi Derrick
                   </Text>
-                  <Text style={{color: 'white'}}>Member Number: 31</Text>
+                  <Text style={{color: 'white'}}>
+                    Member Number: {this.state.member.member_number || 9}
+                  </Text>
                 </View>
               </View>
             </View>
@@ -53,9 +78,33 @@ class Home extends Component {
             <View style={styles.bottom}>
               <View style={[styles.summuryCtr, styles.shadow]}>
                 <Text style={{opacity: 0.5, fontSize: 13}}>MUU Coop</Text>
-                <Text style={{fontSize: 16}}>Savings</Text>
-                <Text style={{fontSize: 16}}>Loans</Text>
-                <Text style={{fontSize: 16}}>Mutuals</Text>
+                <Text
+                  style={{fontSize: 16}}
+                  onPress={() => {
+                    this.setState({
+                      ...this.state,
+                      loanInputCtr: true,
+                    });
+                  }}>
+                  Savings
+                </Text>
+                <Text
+                  style={{fontSize: 16}}
+                  onPress={() => {
+                    this.setState({
+                      ...this.state,
+                      loanInputCtr: true,
+                    });
+                  }}>
+                  Loans
+                </Text>
+                <Text
+                  style={{fontSize: 16}}
+                  onPress={() => {
+                    this.props.navigation.navigate('Mutual');
+                  }}>
+                  Mutuals
+                </Text>
               </View>
               <View style={styles.saveAndLoansCtr}>
                 <View style={styles.saveCtr}>
@@ -89,7 +138,6 @@ class Home extends Component {
                     <Text style={{fontSize: 15, fontWeight: 'bold'}}>
                       Model Uganda Cooperation
                     </Text>
-                    <Text>Members: 35</Text>
                     <Text>Members: 35</Text>
                     <Text>Mutual Loans: 3</Text>
                     <Text>Personal Loans: 5</Text>

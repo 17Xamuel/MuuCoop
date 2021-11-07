@@ -17,6 +17,7 @@ function BottomTabs() {
       activeColor="#fff"
       shifting="true"
       initialRouteName="Home"
+      backBehavior="initialRoute"
       screenOptions={{header: () => null}}>
       <Tab.Screen
         name="Home"
@@ -24,6 +25,7 @@ function BottomTabs() {
         options={{
           tabBarLabel: 'Home',
           tabBarColor: '#0dd940',
+          tabBarHideOnKeyboard: true,
           tabBarIcon: ({color}) => (
             <Ionicons name="ios-home-outline" color={color} size={26} />
           ),
@@ -36,6 +38,7 @@ function BottomTabs() {
         options={{
           tabBarLabel: 'Mutual',
           tabBarColor: '#ce03fc',
+          tabBarHideOnKeyboard: true,
           tabBarIcon: ({color}) => (
             <Ionicons name="ios-people-outline" color={color} size={26} />
           ),

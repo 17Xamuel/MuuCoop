@@ -16,6 +16,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import FormsApi from '../HttpHelper/post';
 
 //storage
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class Register extends Component {
   constructor(props) {
@@ -66,8 +67,19 @@ class Register extends Component {
         ToastAndroid.show('An Error Occured', ToastAndroid.LONG);
       } else {
         ToastAndroid.show('Success, Redirecting...', ToastAndroid.LONG);
-        this.props.navigation.navigate('Login', {
-          member_number: res.member_number,
+        await AsyncStorage.setItem('user', JSON.stringify(res), error => {
+          if (error) {
+            Alert.alert('Error', 'An Error Occured, Start The App Again', [
+              {
+                text: 'Exit',
+                onPress: () => {
+                  BackHandler.exitApp();
+                },
+              },
+            ]);
+          } else {
+            this.props.navigation.navigate('BottomTabs');
+          }
         });
       }
     } else {
